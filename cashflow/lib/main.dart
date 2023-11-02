@@ -1,5 +1,6 @@
 import 'package:cashflow/Cost/cost_main.dart';
 import 'package:cashflow/LoginScreen/login_screen.dart';
+import 'package:cashflow/LoginScreen/signup.dart';
 import 'package:cashflow/Revenue/revenue_main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
-
+  User? user = FirebaseAuth.instance.currentUser;
   final List<Widget> _tabs = [
     CostMain(),
     RevenueMain(),
@@ -63,11 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             )
           ],
-          title: Text('CASHFLOW'),
+          title: Text('Welcome: ${user!.displayName}'),
           bottom: TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.money_off), text: 'Cost'),
-              Tab(icon: Icon(Icons.monetization_on), text: 'Revenue'),
+              Tab(icon: Icon(Icons.house_outlined), text: 'RentR'),
+              Tab(icon: Icon(Icons.house_rounded), text: 'LandLord'),
               Tab(icon: Icon(Icons.stacked_line_chart), text: 'CashFlow'),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:cashflow/LoginScreen/signup.dart';
 import 'package:cashflow/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,11 @@ class LoginScreen extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return MyHomePage();
+          if (snapshot.data?.displayName == null) {
+            return const SignUp();
+          } else {
+            return MyHomePage();
+          }
         }
         return login(context);
       },
@@ -78,7 +83,7 @@ class LoginScreen extends StatelessWidget {
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => MyHomePage()),
+          MaterialPageRoute(builder: (context) => const SignUp()),
         );
       },
       onRecoverPassword: _recoverPassword,
