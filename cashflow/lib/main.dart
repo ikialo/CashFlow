@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cashflow/Cost/cost_main.dart';
 import 'package:cashflow/LoginScreen/login_screen.dart';
 import 'package:cashflow/LoginScreen/signup.dart';
@@ -5,7 +7,9 @@ import 'package:cashflow/Revenue/revenue_main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'state_manager.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,13 +17,21 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Counter()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       title: 'CashFLow',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -34,8 +46,10 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  int _currentIndex = 2;
+  late TabController tabcon;
+
   User? user = FirebaseAuth.instance.currentUser;
   final List<Widget> _tabs = [
     CostMain(),
@@ -45,6 +59,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    tabcon = TabController(
+      initialIndex: 1,
+      length: 3,
+      vsync: this,
+    );
+    super.initState();
   }
 
   @override
@@ -66,6 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           title: Text('Welcome: ${user!.displayName}'),
           bottom: TabBar(
+            controller: tabcon,
             tabs: [
               Tab(icon: Icon(Icons.house_outlined), text: 'RentR'),
               Tab(icon: Icon(Icons.house_rounded), text: 'LandLord'),
@@ -74,6 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         body: TabBarView(
+          controller: tabcon,
           children: _tabs,
         ),
       ),

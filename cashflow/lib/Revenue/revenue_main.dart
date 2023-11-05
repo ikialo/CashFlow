@@ -1,7 +1,19 @@
+import 'dart:html';
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:cashflow/Revenue/dialog.dart';
+import 'package:cashflow/state_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
+import 'package:web_smooth_scroll/web_smooth_scroll.dart';
 
 class RevenueMain extends StatefulWidget {
   const RevenueMain({super.key});
@@ -19,101 +31,7 @@ class _RevenueMainState extends State<RevenueMain> {
           showDialog(
             context: context,
             builder: (context) {
-              return Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                elevation: 10.0,
-                child: Expanded(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height / 4.3,
-                    // height: 23.5.h,
-                    // height: 210,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.yellowAccent.shade100,
-                                Colors.yellow,
-                                Colors.yellow.shade600,
-                                Colors.yellow.shade800,
-                              ],
-                            ),
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(12.0),
-                              topLeft: Radius.circular(12.0),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              //-------------------------------------- Pack Title
-                              Padding(
-                                padding: EdgeInsets.only(top: 8.0),
-                                child: Text(
-                                  'NSFW 18+ Pack',
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.grey.shade800,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'NewYork',
-                                    letterSpacing: 1.0,
-                                  ),
-                                ),
-                              ),
-                              Divider(color: Colors.yellow.shade800),
-                              //----------------------------------------------- Features
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 1, horizontal: 1),
-                                child: Padding(
-                                  padding: EdgeInsets.only(bottom: 0.5),
-                                  child: Text(
-                                    'SFX set powerful enough to embarrass any individual on planet Earth.',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: 'NewYork',
-                                      color: Colors.grey.shade800,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //------------------------------------    Buy Now
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 1),
-                              child: Text(
-                                'Unlock',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
+              return ServiceDialog();
             },
           );
         },
@@ -121,4 +39,12 @@ class _RevenueMainState extends State<RevenueMain> {
       ),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }

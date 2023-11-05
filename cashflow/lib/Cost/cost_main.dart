@@ -1,6 +1,8 @@
+import 'package:cashflow/state_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 
 class CostMain extends StatefulWidget {
   const CostMain({super.key});
@@ -44,6 +46,9 @@ class _CostMainState extends State<CostMain> {
                           labelText: 'Cost of Goods Sold',
                           hintText: 'Cost of Goods Sold')),
                 ),
+                Consumer<Counter>(
+                    builder: (context, user, _) =>
+                        Image.memory(user.photos[0])),
                 ElevatedButton(
                   onPressed: () {
                     setState(() {});
