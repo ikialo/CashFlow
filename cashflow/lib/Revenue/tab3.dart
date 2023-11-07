@@ -1,5 +1,9 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -17,6 +21,13 @@ class TabThree extends StatefulWidget {
 }
 
 class _TabThreeState extends State<TabThree> {
+  FirebaseStorage storage = FirebaseStorage.instance;
+
+  final User? _user = FirebaseAuth.instance.currentUser;
+
+  CollectionReference users =
+      FirebaseFirestore.instance.collection('Properties');
+
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   static const CameraPosition _kGooglePlex = CameraPosition(
@@ -91,6 +102,53 @@ class _TabThreeState extends State<TabThree> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Center(
+                        child: Container(
+                          width: 200,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.blue)),
+                            onPressed: () async {
+                              // If the form is valid, display a snackbar. In the real world,
+                              // you'd often call a server or save the information in a database.
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   const SnackBar(content: Text("")),
+                              // );
+
+                              // //TODO: load to firebase.
+                              String uniqID = users.doc().id;
+
+                              await users.doc(uniqID).set({
+                                'UserID': _user!.uid,
+                                'cost': user.info.cost, // John Doe
+                                'rooms': user.info.room,
+                                'lat': user.info.lat,
+                                "lng": user.info.lng,
+                                'type': user.info.type // Stokes and Sons
+                              }).then((value) async {
+                                print(user.photos.length);
+                                var urls =
+                                    await uploadFiles(user.photos, uniqID);
+
+                                users.doc(uniqID).update({"photos": urls});
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Property Added")),
+                                );
+                              }).catchError((error) =>
+                                  print("Failed to add user: $error"));
+
+                              Navigator.of(context).pop();
+                            },
+                            child: Text("Submit".toUpperCase()),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -118,4 +176,52 @@ class _TabThreeState extends State<TabThree> {
       ),
     );
   }
+
+  Future<List<String>> uploadFiles(List<Uint8List> _images, uid) async {
+    List<String> imageUrls = [];
+    int cnt = 0;
+    _images.forEach(
+      (_image) async {
+        if (_image != Uint8List(0)) {
+          imageUrls.add(await uploadFile(_image, cnt, uid));
+        }
+        cnt = cnt + 1;
+      },
+    );
+
+    print(imageUrls);
+    return imageUrls;
+  }
+
+  Future<String> uploadFile(Uint8List _image, int cnt, uid) async {
+    final ref = storage.ref(_user!.uid).child(uid).child("${cnt}.jpg");
+    UploadTask uploadTask = ref.putData(_image);
+    // .then((p0) {
+    //   print("program");
+    // });
+    // await uploadTask.onComplete;
+
+    var imageUrl = await (await uploadTask).ref.getDownloadURL();
+
+    return imageUrl.toString();
+
+    // return await storageReference.getDownloadURL();
+  }
+  // Future uploadFile() async {
+  //   print("upload file");
+  //   if (_photo == null) return;
+
+  //   print("photo exists");
+  //   final fileName = _photo;
+  //   final destination = 'files';
+
+  //   try {
+  //     print("in try");
+  //     final ref = storage.ref(destination).child('file.jpg');
+  //     await ref.putData(_photo).then((p0) => print("uploaded"));
+  //   } catch (e) {
+  //     print("print");
+  //     print(e);
+  //   }
+  // }
 }

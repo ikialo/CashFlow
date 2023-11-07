@@ -54,7 +54,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   final List<Widget> _tabs = [
     CostMain(),
     RevenueMain(),
-    ProfileScreen(),
   ];
 
   Future<void> _signOut() async {
@@ -65,8 +64,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void initState() {
     // TODO: implement initState
     tabcon = TabController(
-      initialIndex: 1,
-      length: 3,
+      initialIndex: 0,
+      length: 2,
       vsync: this,
     );
     super.initState();
@@ -89,30 +88,30 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               },
             )
           ],
-          title: Text('Welcome: ${user!.displayName}'),
+          leading: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Image.asset(
+              "assets/images/RenterPG_logo.png",
+              height: 30,
+              width: 30,
+            ),
+          ),
+          title:
+              Center(child: new Text("Renter PG", textAlign: TextAlign.center)),
           bottom: TabBar(
             controller: tabcon,
             tabs: [
-              Tab(icon: Icon(Icons.house_outlined), text: 'RentR'),
+              Tab(icon: Icon(Icons.house_outlined), text: 'Renter'),
               Tab(icon: Icon(Icons.house_rounded), text: 'LandLord'),
-              Tab(icon: Icon(Icons.stacked_line_chart), text: 'CashFlow'),
             ],
           ),
         ),
         body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: tabcon,
           children: _tabs,
         ),
       ),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Profile Screen'),
     );
   }
 }

@@ -77,8 +77,8 @@ class LoginScreen extends StatelessWidget {
 
   Widget login(context) {
     return FlutterLogin(
-      title: 'HomeFix',
-      logo: AssetImage('assets/images/placeholder.png'),
+      title: 'RenterPG',
+      logo: AssetImage('assets/images/RenterPG_logo.png'),
       onLogin: _authUser,
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {

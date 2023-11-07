@@ -80,9 +80,11 @@ class _SignUpState extends State<SignUp> {
                             //TODO: load to firebase.
                             await _user?.updateDisplayName(name.text);
                             await users
-                                .add({
+                                .doc(_user!.uid)
+                                .set({
                                   'full_name': name.text, // John Doe
                                   'phone': number.text, // Stokes and Sons
+                                  'email': _user!.email
                                 })
                                 .then((value) => print("User Added"))
                                 .catchError((error) =>
