@@ -130,11 +130,16 @@ class _TabThreeState extends State<TabThree> {
                                 "lng": user.info.lng,
                                 'type': user.info.type // Stokes and Sons
                               }).then((value) async {
-                                print(user.photos.length);
                                 var urls =
                                     await uploadFiles(user.photos, uniqID);
 
-                                users.doc(uniqID).update({"photos": urls});
+                                urls.asMap().forEach((i, element) {
+                                  users
+                                      .doc(uniqID)
+                                      .update({"photo_$i": element});
+                                  print(element);
+                                });
+
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       content: Text("Property Added")),
@@ -179,31 +184,38 @@ class _TabThreeState extends State<TabThree> {
 
   Future<List<String>> uploadFiles(List<Uint8List> _images, uid) async {
     List<String> imageUrls = [];
-    int cnt = 0;
-    _images.forEach(
-      (_image) async {
-        if (_image != Uint8List(0)) {
-          imageUrls.add(await uploadFile(_image, cnt, uid));
-        }
-        cnt = cnt + 1;
-      },
-    );
 
-    print(imageUrls);
+    // _images.asMap().forEach(
+    //   (cnt, _image) async {
+    //     if (_image.isNotEmpty) {
+    //       imageUrls.add(await uploadFile(_image, cnt, uid));
+    //     }
+    //   },
+    // );
+
+    for (int i = 0; i < _images.length; i++) {
+      if (_images[i].isNotEmpty) {
+        imageUrls.add(await uploadFile(_images[i], i, uid));
+      }
+    }
     return imageUrls;
   }
 
   Future<String> uploadFile(Uint8List _image, int cnt, uid) async {
     final ref = storage.ref(_user!.uid).child(uid).child("${cnt}.jpg");
+    print(cnt);
+    print("not empty ${_image.isNotEmpty}");
     UploadTask uploadTask = ref.putData(_image);
+
     // .then((p0) {
     //   print("program");
     // });
     // await uploadTask.onComplete;
 
-    var imageUrl = await (await uploadTask).ref.getDownloadURL();
+    String imageUrl = await (await uploadTask).ref.getDownloadURL();
+    print(imageUrl);
 
-    return imageUrl.toString();
+    return imageUrl;
 
     // return await storageReference.getDownloadURL();
   }
