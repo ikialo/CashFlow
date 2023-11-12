@@ -128,7 +128,13 @@ class _TabThreeState extends State<TabThree> {
                                 'rooms': user.info.room,
                                 'lat': user.info.lat,
                                 "lng": user.info.lng,
-                                'type': user.info.type // Stokes and Sons
+                                'type': user.info.type,
+                                'photo_0': '',
+                                'photo_1': '',
+                                'photo_2': '',
+                                'photo_3': '',
+                                'photo_4': '',
+                                'photo_5': '',
                               }).then((value) async {
                                 var urls =
                                     await uploadFiles(user.photos, uniqID);

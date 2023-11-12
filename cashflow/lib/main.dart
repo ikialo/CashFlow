@@ -4,6 +4,7 @@ import 'package:cashflow/Cost/cost_main.dart';
 import 'package:cashflow/LoginScreen/login_screen.dart';
 import 'package:cashflow/LoginScreen/signup.dart';
 import 'package:cashflow/Revenue/revenue_main.dart';
+import 'package:cashflow/appcolor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -77,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       length: _tabs.length,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: AppColors.apricot,
           actions: <Widget>[
             IconButton(
               icon: Icon(
@@ -91,9 +93,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           leading: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Image.asset(
-              "assets/images/RenterPG_logo.png",
-              height: 30,
-              width: 30,
+              "assets/images/RenterPG_marker.png",
             ),
           ),
           title:

@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 
+import '../appcolor.dart';
+
 const users = const {
   'dribbble@gmail.com': '12345',
   'hunter@gmail.com': 'hunter',
@@ -77,6 +79,7 @@ class LoginScreen extends StatelessWidget {
 
   Widget login(context) {
     return FlutterLogin(
+      theme: LoginTheme(primaryColor: AppColors.melon),
       title: 'RenterPG',
       logo: AssetImage('assets/images/RenterPG_logo.png'),
       onLogin: _authUser,

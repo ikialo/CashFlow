@@ -169,180 +169,178 @@ class _ServiceDialogState extends State<ServiceDialog>
           borderRadius: BorderRadius.circular(12.0),
         ),
         elevation: 10.0,
-        child: Expanded(
-          child: Container(
-            height: MediaQuery.of(context).size.height - 200,
-            // height: 23.5.h,
-            // height: 210,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            child: Consumer<Counter>(builder: (context, user, _) {
-              _tabController.index = user.tab_index_dialog;
-              return Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.yellowAccent.shade100,
-                          Colors.yellow,
-                          Colors.yellow.shade600,
-                          Colors.yellow.shade800,
-                        ],
-                      ),
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(12.0),
-                        topLeft: Radius.circular(12.0),
-                      ),
+        child: Container(
+          height: MediaQuery.of(context).size.height - 200,
+          // height: 23.5.h,
+          // height: 210,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Consumer<Counter>(builder: (context, user, _) {
+            _tabController.index = user.tab_index_dialog;
+            return Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.yellowAccent.shade100,
+                        Colors.yellow,
+                        Colors.yellow.shade600,
+                        Colors.yellow.shade800,
+                      ],
                     ),
-                    child: Column(
-                      children: [
-                        //-------------------------------------- Pack Title
-                        Padding(
-                          padding: EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            'Upload Property Information',
-                            style: TextStyle(
-                              fontSize: 17,
-                              color: Colors.grey.shade800,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'NewYork',
-                              letterSpacing: 1.0,
-                            ),
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(12.0),
+                      topLeft: Radius.circular(12.0),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      //-------------------------------------- Pack Title
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          'Upload Property Information',
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.grey.shade800,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'NewYork',
+                            letterSpacing: 1.0,
                           ),
                         ),
-                        Divider(color: Colors.yellow.shade800),
-                        //----------------------------------------------- Features
-                        TabBar(
-                          controller: _tabController,
-                          tabs: [
-                            Tab(icon: Icon(Icons.photo), text: 'Upload Photos'),
-                            Tab(
-                                icon: Icon(Icons.file_upload),
-                                text: 'Upload Information'),
-                            Tab(
-                                icon: Icon(Icons.view_agenda),
-                                text: 'Review Information'),
+                      ),
+                      Divider(color: Colors.yellow.shade800),
+                      //----------------------------------------------- Features
+                      TabBar(
+                        controller: _tabController,
+                        tabs: [
+                          Tab(icon: Icon(Icons.photo), text: 'Upload Photos'),
+                          Tab(
+                              icon: Icon(Icons.file_upload),
+                              text: 'Upload Information'),
+                          Tab(
+                              icon: Icon(Icons.view_agenda),
+                              text: 'Review Information'),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                //------------------------------------    Buy Now
+
+                Container(
+                  height: 400,
+                  child: Scaffold(
+                    body: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _tabController,
+                      children: [
+                        Container(
+                            child: Column(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _showPicker(context);
+                              },
+                              child: Container(
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.blue,
+                                  ), //Border.all
+                                  borderRadius: BorderRadius.circular(15),
+                                ), //BoxDecoration
+
+                                child: Row(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Icon(Icons.camera),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text("Upload")
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 300,
+                              width: 600,
+                              child: LayoutGrid(
+                                columnGap: 1,
+                                rowGap: 1,
+                                areas: '''
+                                                        1 3 5
+                                                        2 4 6
+                                                      ''',
+                                // A number of extension methods are provided for concise track sizing
+                                columnSizes: [199.px, 199.px, 199.px],
+                                rowSizes: [
+                                  149.px,
+                                  149.px,
+                                ],
+                                children: [
+                                  // Column 1
+                                  gridArea('1').containing(_photo[0].isEmpty
+                                      ? Image.asset(
+                                          'assets/images/placeholder.png')
+                                      : Image.memory(_photo[0])),
+                                  gridArea('2').containing(_photo[1].isEmpty
+                                      ? Image.asset(
+                                          'assets/images/placeholder.png')
+                                      : Image.memory(_photo[1])),
+                                  // Column 2
+                                  gridArea('3').containing(_photo[2].isEmpty
+                                      ? Image.asset(
+                                          'assets/images/placeholder.png')
+                                      : Image.memory(_photo[2])),
+                                  gridArea('4').containing(_photo[3].isEmpty
+                                      ? Image.asset(
+                                          'assets/images/placeholder.png')
+                                      : Image.memory(_photo[3])),
+                                  // Column 3
+
+                                  gridArea('5').containing(_photo[4].isEmpty
+                                      ? Image.asset(
+                                          'assets/images/placeholder.png')
+                                      : Image.memory(_photo[4])),
+                                  gridArea('6').containing(_photo[5].isEmpty
+                                      ? Image.asset(
+                                          'assets/images/placeholder.png')
+                                      : Image.memory(_photo[5])),
+                                ],
+                              ),
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  provider.setPhoto(_photo);
+                                  _tabController.index = 1;
+                                },
+                                child: Text("Next"))
                           ],
-                        )
+                        )),
+                        TabTwo(),
+                        TabThree()
                       ],
                     ),
                   ),
-                  //------------------------------------    Buy Now
-
-                  Container(
-                    height: 400,
-                    child: Scaffold(
-                      body: TabBarView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        controller: _tabController,
-                        children: [
-                          Container(
-                              child: Column(
-                            children: [
-                              SizedBox(
-                                height: 20,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  _showPicker(context);
-                                },
-                                child: Container(
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blue,
-                                    ), //Border.all
-                                    borderRadius: BorderRadius.circular(15),
-                                  ), //BoxDecoration
-
-                                  child: Row(
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Icon(Icons.camera),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text("Upload")
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: 300,
-                                width: 600,
-                                child: LayoutGrid(
-                                  columnGap: 1,
-                                  rowGap: 1,
-                                  areas: '''
-                                                          1 3 5
-                                                          2 4 6
-                                                        ''',
-                                  // A number of extension methods are provided for concise track sizing
-                                  columnSizes: [199.px, 199.px, 199.px],
-                                  rowSizes: [
-                                    149.px,
-                                    149.px,
-                                  ],
-                                  children: [
-                                    // Column 1
-                                    gridArea('1').containing(_photo[0].isEmpty
-                                        ? Image.asset(
-                                            'assets/images/placeholder.png')
-                                        : Image.memory(_photo[0])),
-                                    gridArea('2').containing(_photo[1].isEmpty
-                                        ? Image.asset(
-                                            'assets/images/placeholder.png')
-                                        : Image.memory(_photo[1])),
-                                    // Column 2
-                                    gridArea('3').containing(_photo[2].isEmpty
-                                        ? Image.asset(
-                                            'assets/images/placeholder.png')
-                                        : Image.memory(_photo[2])),
-                                    gridArea('4').containing(_photo[3].isEmpty
-                                        ? Image.asset(
-                                            'assets/images/placeholder.png')
-                                        : Image.memory(_photo[3])),
-                                    // Column 3
-
-                                    gridArea('5').containing(_photo[4].isEmpty
-                                        ? Image.asset(
-                                            'assets/images/placeholder.png')
-                                        : Image.memory(_photo[4])),
-                                    gridArea('6').containing(_photo[5].isEmpty
-                                        ? Image.asset(
-                                            'assets/images/placeholder.png')
-                                        : Image.memory(_photo[5])),
-                                  ],
-                                ),
-                              ),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    provider.setPhoto(_photo);
-                                    _tabController.index = 1;
-                                  },
-                                  child: Text("Next"))
-                            ],
-                          )),
-                          TabTwo(),
-                          TabThree()
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }),
-          ),
+                ),
+              ],
+            );
+          }),
         ),
       );
     });

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class Counter with ChangeNotifier, DiagnosticableTreeMixin {
   int _count = 0;
   int _tab_index_dialog = 0;
+  bool _diableMapMove = true;
   Information _info = Information(0, 0, 0, 0, 'House');
   List<Uint8List> _photos = [
     Uint8List(0),
@@ -19,6 +20,8 @@ class Counter with ChangeNotifier, DiagnosticableTreeMixin {
 
   Information get info => _info;
   int get tab_index_dialog => _tab_index_dialog;
+
+  bool get disableMapMove => _diableMapMove;
 
   void increment() {
     _count++;
@@ -37,6 +40,11 @@ class Counter with ChangeNotifier, DiagnosticableTreeMixin {
 
   void tabIndexDialog(tab_index_dialog) {
     _tab_index_dialog = tab_index_dialog;
+    notifyListeners();
+  }
+
+  void SetDisableMapMove(diableMapMove) {
+    _diableMapMove = diableMapMove;
     notifyListeners();
   }
 
