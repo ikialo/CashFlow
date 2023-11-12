@@ -656,7 +656,8 @@ class _CostMainState extends State<CostMain> {
                 child: Container(
                   child: CarouselSlider(
                     disableGesture: true,
-                    options: CarouselOptions(height: 300.0),
+                    options: CarouselOptions(
+                        height: MediaQuery.of(context).size.height / 4),
                     items: _urls.map((i) {
                       return Builder(
                         builder: (BuildContext context) {
