@@ -1,25 +1,17 @@
 import 'dart:async';
-import 'dart:html';
-import 'dart:typed_data';
+
 import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cashflow/Revenue/Edit_input.dart';
 import 'package:cashflow/Revenue/dialog.dart';
 import 'package:cashflow/state_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_picker_web/image_picker_web.dart';
-import 'package:path/path.dart';
+
 import 'package:provider/provider.dart';
-import 'package:web_smooth_scroll/web_smooth_scroll.dart';
 
 import '../appcolor.dart';
 
@@ -52,83 +44,88 @@ class _RevenueMainState extends State<RevenueMain> {
                   Expanded(flex: 1, child: Text('Welcome ${_user!.uid}')),
                   Expanded(
                     flex: 15,
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        CameraPosition _kGooglePlex = CameraPosition(
-                          target: LatLng(snapshot.data!.docs[index].get('lat'),
-                              snapshot.data!.docs[index].get('lng')),
-                          zoom: 13,
-                        );
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 400,
-                            child: InkWell(
-                              onTap: () {
-                                showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (context) {
-                                    return dialog_edit(context);
-                                  },
-                                );
-                              },
-                              child: Card(
-                                  color: AppColors.dim_grey,
-                                  shadowColor: AppColors.dim_grey,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Column(
-                                            children: [
-                                              Text(snapshot.data!.docs[index]
-                                                  .get('cost')
-                                                  .toString()),
-                                              Text(snapshot.data!.docs[index]
-                                                  .get('type')
-                                                  .toString()),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            height: 150,
-                                            width: 200,
-                                            child: GoogleMap(
-                                              scrollGesturesEnabled: true,
-                                              mapType: MapType.hybrid,
-                                              initialCameraPosition:
-                                                  _kGooglePlex,
-                                              onMapCreated: (GoogleMapController
-                                                  controller) {
-                                                _controller
-                                                    .complete(controller);
-                                              },
-                                              markers: {
-                                                Marker(
-                                                    markerId:
-                                                        MarkerId("Rental"),
-                                                    position: LatLng(
-                                                        snapshot
-                                                            .data!.docs[index]
-                                                            .get('lat'),
-                                                        snapshot
-                                                            .data!.docs[index]
-                                                            .get('lng')))
-                                              },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 50, right: 50),
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          CameraPosition _kGooglePlex = CameraPosition(
+                            target: LatLng(
+                                snapshot.data!.docs[index].get('lat'),
+                                snapshot.data!.docs[index].get('lng')),
+                            zoom: 13,
+                          );
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              width: 400,
+                              child: InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return dialog_edit(context);
+                                    },
+                                  );
+                                },
+                                child: Card(
+                                    color: AppColors.dim_grey,
+                                    shadowColor: AppColors.dim_grey,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              children: [
+                                                Text(snapshot.data!.docs[index]
+                                                    .get('cost')
+                                                    .toString()),
+                                                Text(snapshot.data!.docs[index]
+                                                    .get('type')
+                                                    .toString()),
+                                              ],
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )),
+                                          Expanded(
+                                            child: Container(
+                                              height: 150,
+                                              width: 200,
+                                              child: GoogleMap(
+                                                scrollGesturesEnabled: true,
+                                                mapType: MapType.hybrid,
+                                                initialCameraPosition:
+                                                    _kGooglePlex,
+                                                onMapCreated:
+                                                    (GoogleMapController
+                                                        controller) {
+                                                  _controller
+                                                      .complete(controller);
+                                                },
+                                                markers: {
+                                                  Marker(
+                                                      markerId:
+                                                          MarkerId("Rental"),
+                                                      position: LatLng(
+                                                          snapshot
+                                                              .data!.docs[index]
+                                                              .get('lat'),
+                                                          snapshot
+                                                              .data!.docs[index]
+                                                              .get('lng')))
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

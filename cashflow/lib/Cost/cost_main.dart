@@ -77,7 +77,6 @@ class _CostMainState extends State<CostMain> {
     collectionReference.snapshots().listen((event) {
       setState(() {
         event.docs.forEach((element) {
-          print(element.get('lat'));
           markers.add(Marker(
               position: LatLng(element.get("lat"), element.get('lat')),
               markerId: MarkerId(element.id)));
@@ -147,7 +146,6 @@ class _CostMainState extends State<CostMain> {
                                                   element.get('lng')),
                                               infoWindow: InfoWindow(
                                                   onTap: () {
-                                                    // print("before");
                                                     List<String> urls = [];
                                                     for (int i = 0;
                                                         i < 6;
@@ -160,7 +158,6 @@ class _CostMainState extends State<CostMain> {
 
                                                     provider.SetDisableMapMove(
                                                         false);
-                                                    // print("before show");
                                                     showDialog(
                                                       barrierDismissible: false,
                                                       context: context,
@@ -536,8 +533,6 @@ class _CostMainState extends State<CostMain> {
         if (value != '') {
           _urls.add(value);
           im = im + 1;
-
-          print(im);
         }
       },
     );
@@ -562,7 +557,7 @@ class _CostMainState extends State<CostMain> {
           return Column(
             children: [
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,

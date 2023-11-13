@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:cashflow/Cost/cost_main.dart';
 import 'package:cashflow/LoginScreen/login_screen.dart';
-import 'package:cashflow/LoginScreen/signup.dart';
 import 'package:cashflow/Revenue/revenue_main.dart';
 import 'package:cashflow/appcolor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,13 +45,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  int _currentIndex = 2;
   late TabController tabcon;
 
   User? user = FirebaseAuth.instance.currentUser;
   final List<Widget> _tabs = [
-    CostMain(),
-    RevenueMain(),
+    const CostMain(),
+    const RevenueMain(),
   ];
 
   Future<void> _signOut() async {
@@ -63,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     tabcon = TabController(
       initialIndex: 0,
       length: 2,
@@ -81,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           backgroundColor: AppColors.apricot,
           actions: <Widget>[
             IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.logout,
                 color: Colors.white,
               ),
@@ -96,8 +91,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               "assets/images/RenterPG_marker.png",
             ),
           ),
-          title:
-              Center(child: new Text("Renter PG", textAlign: TextAlign.center)),
+          title: Center(
+              child: const Text("Renter PG", textAlign: TextAlign.center)),
           bottom: TabBar(
             controller: tabcon,
             tabs: [

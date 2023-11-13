@@ -6,31 +6,20 @@ import 'package:flutter_login/flutter_login.dart';
 
 import '../appcolor.dart';
 
-const users = const {
-  'dribbble@gmail.com': '12345',
-  'hunter@gmail.com': 'hunter',
-};
-
 class LoginScreen extends StatelessWidget {
-  Duration get loginTime => Duration(milliseconds: 2250);
+  Duration get loginTime => const Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) async {
-    debugPrint('Names: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((value) async {
       try {
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: data.name, password: data.password);
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: data.name, password: data.password);
 
-        debugPrint('Name: ${data.name}, Password: ${data.password}');
         return null;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-
           return 'user-not-found';
         } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
           return 'wrong-password';
         }
       }
@@ -39,23 +28,19 @@ class LoginScreen extends StatelessWidget {
   }
 
   Future<String?> _signupUser(SignupData data) async {
-    debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) async {
-      final credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: data.name.toString(), password: data.password.toString());
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: data.name.toString(), password: data.password.toString());
 
-      debugPrint('Name: ${data.name}, Password: ${data.password}');
       return null;
     });
   }
 
   Future<String> _recoverPassword(String name) {
-    debugPrint('Name: $name');
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(name)) {
-        return 'User not exists';
-      }
+      // if (!users.containsKey(name)) {
+      //   return 'User not exists';
+      // }
       return 'user exists';
     });
   }
@@ -81,7 +66,7 @@ class LoginScreen extends StatelessWidget {
     return FlutterLogin(
       theme: LoginTheme(primaryColor: AppColors.melon),
       title: 'RenterPG',
-      logo: AssetImage('assets/images/RenterPG_logo.png'),
+      logo: const AssetImage('assets/images/RenterPG_logo.png'),
       onLogin: _authUser,
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {

@@ -1,8 +1,6 @@
 import 'package:cashflow/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUp extends StatefulWidget {
@@ -66,7 +64,7 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   width: double.infinity,
                   child: Center(
-                    child: Container(
+                    child: SizedBox(
                       width: 200,
                       child: ElevatedButton(
                         onPressed: () async {
@@ -77,7 +75,6 @@ class _SignUpState extends State<SignUp> {
                               const SnackBar(content: Text("Pro")),
                             );
 
-                            //TODO: load to firebase.
                             await _user?.updateDisplayName(name.text);
                             await users
                                 .doc(_user!.uid)
@@ -86,9 +83,8 @@ class _SignUpState extends State<SignUp> {
                                   'phone': number.text, // Stokes and Sons
                                   'email': _user!.email
                                 })
-                                .then((value) => print("User Added"))
-                                .catchError((error) =>
-                                    print("Failed to add user: $error"));
+                                .then((value) {})
+                                .catchError((error) {});
 
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
