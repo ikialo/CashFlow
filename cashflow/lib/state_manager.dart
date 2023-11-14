@@ -5,15 +5,8 @@ class Counter with ChangeNotifier, DiagnosticableTreeMixin {
   int _count = 0;
   int _tab_index_dialog = 0;
   bool _diableMapMove = true;
-  Information _info = Information(0, 0, 0, 0, 'House');
-  List<Uint8List> _photos = [
-    Uint8List(0),
-    Uint8List(0),
-    Uint8List(0),
-    Uint8List(0),
-    Uint8List(0),
-    Uint8List(0)
-  ];
+  Information _info = Information(-9.4790, 147.1494, 0, 0, 'House');
+  List<Uint8List> _photos = [];
 
   int get count => _count;
   List<Uint8List> get photos => _photos;

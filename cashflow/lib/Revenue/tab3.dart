@@ -33,10 +33,7 @@ class _TabThreeState extends State<TabThree> {
 
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(-9.4790, 147.1494),
-    zoom: 13,
-  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +41,7 @@ class _TabThreeState extends State<TabThree> {
           padding: const EdgeInsets.all(12.0),
           child: Consumer<Counter>(
               builder: (context, user, _) => ListView.builder(
-                  itemCount: 2,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     // if (index == 0) {
                     //   return Column(children: [
@@ -84,6 +81,12 @@ class _TabThreeState extends State<TabThree> {
                     //     },
                     //   );
                     // }
+
+                    CameraPosition _kGooglePlex = CameraPosition(
+                      target: LatLng(user.info.lat, user.info.lng),
+                      zoom: 13,
+                    );
+
                     if (index == 0) {
                       return Column(children: [
                         Text("House Type: ${user.info.type.toString()} "),
@@ -138,59 +141,61 @@ class _TabThreeState extends State<TabThree> {
                       );
                     } else {
                       return //           const SizedBox(height: 15),
-                          SizedBox(
-                        width: double.infinity,
-                        child: Center(
-                          child: Container(
-                            width: 200,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateColor.resolveWith(
-                                          (states) => Colors.blue)),
-                              onPressed: () async {
-                                // If the form is valid, display a snackbar. In the real world,
-                                // you'd often call a server or save the information in a database.
-                                // ScaffoldMessenger.of(context).showSnackBar(
-                                //   const SnackBar(content: Text("")),
-                                // );
+                          Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Center(
+                            child: Container(
+                              width: 200,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) => Colors.blue)),
+                                onPressed: () async {
+                                  // If the form is valid, display a snackbar. In the real world,
+                                  // you'd often call a server or save the information in a database.
+                                  // ScaffoldMessenger.of(context).showSnackBar(
+                                  //   const SnackBar(content: Text("")),
+                                  // );
 
-                                // //TODO: load to firebase.
-                                String uniqID = users.doc().id;
+                                  String uniqID = users.doc().id;
 
-                                await users.doc(uniqID).set({
-                                  'UserID': _user!.uid,
-                                  'cost': user.info.cost, // John Doe
-                                  'rooms': user.info.room,
-                                  'lat': user.info.lat,
-                                  "lng": user.info.lng,
-                                  'type': user.info.type,
-                                  'photo_0': '',
-                                  'photo_1': '',
-                                  'photo_2': '',
-                                  'photo_3': '',
-                                  'photo_4': '',
-                                  'photo_5': '',
-                                }).then((value) async {
-                                  var urls =
-                                      await uploadFiles(user.photos, uniqID);
+                                  await users.doc(uniqID).set({
+                                    'UserID': _user!.uid,
+                                    'cost': user.info.cost, // John Doe
+                                    'rooms': user.info.room,
+                                    'lat': user.info.lat,
+                                    "lng": user.info.lng,
+                                    'type': user.info.type,
+                                    'photo_0': '',
+                                    'photo_1': '',
+                                    'photo_2': '',
+                                    'photo_3': '',
+                                    'photo_4': '',
+                                    'photo_5': '',
+                                  }).then((value) async {
+                                    var urls =
+                                        await uploadFiles(user.photos, uniqID);
 
-                                  urls.asMap().forEach((i, element) {
-                                    users
-                                        .doc(uniqID)
-                                        .update({"photo_$i": element});
-                                  });
+                                    urls.asMap().forEach((i, element) {
+                                      users
+                                          .doc(uniqID)
+                                          .update({"photo_$i": element});
+                                    });
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text("Property Added")),
-                                  );
-                                }).catchError((error) =>
-                                    print("Failed to add user: $error"));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text("Property Added")),
+                                    );
+                                  }).catchError((error) =>
+                                      print("Failed to add user: $error"));
 
-                                Navigator.of(context).pop();
-                              },
-                              child: Text("Submit".toUpperCase()),
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("Submit".toUpperCase()),
+                              ),
                             ),
                           ),
                         ),
