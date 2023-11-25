@@ -43,47 +43,8 @@ class _TabThreeState extends State<TabThree> {
               builder: (context, user, _) => ListView.builder(
                   itemCount: 3,
                   itemBuilder: (context, index) {
-                    // if (index == 0) {
-                    //   return Column(children: [
-                    //     Expanded(
-                    //         flex: 1,
-                    //         child: Text(
-                    //             "House Type: ${user.info.type.toString()} ")),
-                    //     Expanded(
-                    //         flex: 1,
-                    //         child: Text(
-                    //             "House Cost: ${user.info.cost.toString()} ")),
-                    //     Expanded(
-                    //         flex: 1,
-                    //         child: Text(
-                    //             "House Rooms: ${user.info.room.toString()} ")),
-                    //     Expanded(
-                    //       flex: 6,
-                    //       child: Container(
-                    //         height: 200,
-                    //         width: 300,
-                    //       ),
-                    //     ),
-                    //   ]);
-                    // }
-                    // if (index == 1) {
-                    //   return GoogleMap(
-                    //     mapType: MapType.hybrid,
-                    //     initialCameraPosition: _kGooglePlex,
-                    //     onMapCreated: (GoogleMapController controller) {
-                    //       _controller.complete(controller);
-                    //     },
-                    //     markers: {
-                    //       Marker(
-                    //         markerId: MarkerId('Home'),
-                    //         position: LatLng(user.info.lat, user.info.lng),
-                    //       ),
-                    //     },
-                    //   );
-                    // }
-
                     CameraPosition _kGooglePlex = CameraPosition(
-                      target: LatLng(user.info.lat, user.info.lng),
+                      target: LatLng(user.mapinfo.lat, user.mapinfo.lng),
                       zoom: 13,
                     );
 
@@ -133,7 +94,8 @@ class _TabThreeState extends State<TabThree> {
                             markers: {
                               Marker(
                                 markerId: MarkerId('Home'),
-                                position: LatLng(user.info.lat, user.info.lng),
+                                position:
+                                    LatLng(user.mapinfo.lat, user.mapinfo.lng),
                               ),
                             },
                           ),
@@ -159,15 +121,20 @@ class _TabThreeState extends State<TabThree> {
                                   // ScaffoldMessenger.of(context).showSnackBar(
                                   //   const SnackBar(content: Text("")),
                                   // );
+                                  Navigator.of(context).pop();
 
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Property Loading")),
+                                  );
                                   String uniqID = users.doc().id;
 
                                   await users.doc(uniqID).set({
                                     'UserID': _user!.uid,
                                     'cost': user.info.cost, // John Doe
                                     'rooms': user.info.room,
-                                    'lat': user.info.lat,
-                                    "lng": user.info.lng,
+                                    'lat': user.mapinfo.lat,
+                                    "lng": user.mapinfo.lng,
                                     'type': user.info.type,
                                     'photo_0': '',
                                     'photo_1': '',
@@ -185,14 +152,14 @@ class _TabThreeState extends State<TabThree> {
                                           .update({"photo_$i": element});
                                     });
 
+                                    urls.clear();
+
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text("Property Added")),
                                     );
                                   }).catchError((error) =>
                                       print("Failed to add user: $error"));
-
-                                  Navigator.of(context).pop();
                                 },
                                 child: Text("Submit".toUpperCase()),
                               ),
@@ -316,14 +283,6 @@ class _TabThreeState extends State<TabThree> {
 
   Future<List<String>> uploadFiles(List<Uint8List> _images, uid) async {
     List<String> imageUrls = [];
-
-    // _images.asMap().forEach(
-    //   (cnt, _image) async {
-    //     if (_image.isNotEmpty) {
-    //       imageUrls.add(await uploadFile(_image, cnt, uid));
-    //     }
-    //   },
-    // );
 
     for (int i = 0; i < _images.length; i++) {
       if (_images[i].isNotEmpty) {

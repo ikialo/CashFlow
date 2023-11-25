@@ -5,16 +5,18 @@ class Counter with ChangeNotifier, DiagnosticableTreeMixin {
   int _count = 0;
   int _tab_index_dialog = 0;
   bool _diableMapMove = true;
-  Information _info = Information(-9.4790, 147.1494, 0, 0, 'House');
+  Information _info = Information(0, 0, 'House');
   List<Uint8List> _photos = [];
+  MapInfo _mapInfo = MapInfo(-9.4790, 147.1494);
+  int _rooms = 10;
 
   int get count => _count;
   List<Uint8List> get photos => _photos;
-
   Information get info => _info;
   int get tab_index_dialog => _tab_index_dialog;
-
   bool get disableMapMove => _diableMapMove;
+  MapInfo get mapinfo => _mapInfo;
+  int get rooms => _rooms;
 
   void increment() {
     _count++;
@@ -41,6 +43,16 @@ class Counter with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
+  void SetMapInfo(mapinfo) {
+    _mapInfo = mapinfo;
+    notifyListeners();
+  }
+
+  void SetRooms(rooms) {
+    _rooms = rooms;
+    notifyListeners();
+  }
+
   /// Makes `Counter` readable inside the devtools by listing all of its properties
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -50,17 +62,23 @@ class Counter with ChangeNotifier, DiagnosticableTreeMixin {
 }
 
 class Information {
-  double lat = 0;
-  double lng = 0;
   double cost = 0;
   int room = 0;
   String type = "House";
 
-  Information(double lat, double lng, double cost, int room, String type) {
-    this.lat = lat;
-    this.lng = lng;
+  Information(double cost, int room, String type) {
     this.cost = cost;
     this.room = room;
     this.type = type;
+  }
+}
+
+class MapInfo {
+  double lat = 0;
+  double lng = 0;
+
+  MapInfo(double lat, double lng) {
+    this.lat = lat;
+    this.lng = lng;
   }
 }

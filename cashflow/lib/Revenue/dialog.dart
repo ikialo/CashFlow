@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cashflow/Revenue/tab2.dart';
 import 'package:cashflow/Revenue/tab3.dart';
+import 'package:cashflow/Revenue/tabmap.dart';
 import 'package:cashflow/appcolor.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _ServiceDialogState extends State<ServiceDialog>
     _photo = [];
 
     _tabController = TabController(
-        length: 3,
+        length: 4,
         vsync: this,
         initialIndex: 0,
         animationDuration: const Duration(milliseconds: 500));
@@ -157,13 +158,16 @@ class _ServiceDialogState extends State<ServiceDialog>
                       TabBar(
                         controller: _tabController,
                         tabs: [
-                          Tab(icon: Icon(Icons.photo), text: 'Upload Photos'),
+                          Tab(icon: Icon(Icons.photo)),
                           Tab(
-                              icon: Icon(Icons.file_upload),
-                              text: 'Upload Information'),
+                            icon: Icon(Icons.file_upload),
+                          ),
                           Tab(
-                              icon: Icon(Icons.view_agenda),
-                              text: 'Review Information'),
+                            icon: Icon(Icons.map),
+                          ),
+                          Tab(
+                            icon: Icon(Icons.view_agenda),
+                          ),
                         ],
                       )
                     ],
@@ -236,61 +240,17 @@ class _ServiceDialogState extends State<ServiceDialog>
                                   );
                                 }).toList(),
                               ),
-
-                              // child: LayoutGrid(
-                              //   columnGap: 1,
-                              //   rowGap: 1,
-                              //   areas: '''
-                              //                           1 3 5
-                              //                           2 4 6
-                              //                         ''',
-                              //   // A number of extension methods are provided for concise track sizing
-                              //   columnSizes: [199.px, 199.px, 199.px],
-                              //   rowSizes: [
-                              //     149.px,
-                              //     149.px,
-                              //   ],
-                              //   children: [
-                              //     // Column 1
-                              //     gridArea('1').containing(_photo[0].isEmpty
-                              //         ? Image.asset(
-                              //             'assets/images/placeholder.png')
-                              //         : Image.memory(_photo[0])),
-                              //     gridArea('2').containing(_photo[1].isEmpty
-                              //         ? Image.asset(
-                              //             'assets/images/placeholder.png')
-                              //         : Image.memory(_photo[1])),
-                              //     // Column 2
-                              //     gridArea('3').containing(_photo[2].isEmpty
-                              //         ? Image.asset(
-                              //             'assets/images/placeholder.png')
-                              //         : Image.memory(_photo[2])),
-                              //     gridArea('4').containing(_photo[3].isEmpty
-                              //         ? Image.asset(
-                              //             'assets/images/placeholder.png')
-                              //         : Image.memory(_photo[3])),
-                              //     // Column 3
-
-                              //     gridArea('5').containing(_photo[4].isEmpty
-                              //         ? Image.asset(
-                              //             'assets/images/placeholder.png')
-                              //         : Image.memory(_photo[4])),
-                              //     gridArea('6').containing(_photo[5].isEmpty
-                              //         ? Image.asset(
-                              //             'assets/images/placeholder.png')
-                              //         : Image.memory(_photo[5])),
-                              //   ],
-                              // ),
                             ),
                             ElevatedButton(
                                 onPressed: () {
                                   provider.setPhoto(_photo);
-                                  _tabController.index = 1;
+                                  provider.tabIndexDialog(1);
                                 },
                                 child: Text("Next"))
                           ],
                         )),
                         TabTwo(),
+                        TabMap(),
                         TabThree()
                       ],
                     ),
